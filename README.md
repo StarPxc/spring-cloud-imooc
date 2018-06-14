@@ -14,7 +14,7 @@
 
 # 简单的微服务架构
 
-![1528856110589](C:\Users\PXC\AppData\Local\Temp\1528856110589.png)
+![架构图](https://github.com/StarPxc/spring-cloud-imooc/blob/master/img/p1.png)
 
 ### 注册中心集群配置
 
