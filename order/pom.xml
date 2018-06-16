@@ -4,16 +4,16 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.imooc</groupId>
-	<artifactId>product</artifactId>
+	<artifactId>order</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
     <modules>
+        <module>client</module>
         <module>common</module>
         <module>server</module>
-        <module>client</module>
     </modules>
     <packaging>pom</packaging>
 
-	<name>product</name>
+	<name>order</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
@@ -28,9 +28,10 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Dalston.SR1</spring-cloud.version>
-        <product-common.version>0.0.1-SNAPSHOT</product-common.version>
+        <product-client.version>0.0.1-SNAPSHOT</product-client.version>
+        <order-common.version>0.0.1-SNAPSHOT</order-common.version>
 	</properties>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -40,14 +41,18 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-            <dependency>
-                <groupId>com.imooc</groupId>
-                <artifactId>product-common</artifactId>
-                <version>${product-common.version}</version>
-            </dependency>
+			<dependency>
+				<groupId>com.imooc</groupId>
+				<artifactId>product-client</artifactId>
+				<version>${product-client.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.imooc</groupId>
+				<artifactId>order-common</artifactId>
+				<version>${order-common.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 
 
 </project>

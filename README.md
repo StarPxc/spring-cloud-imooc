@@ -1,6 +1,6 @@
 # Spring Boot微服务（慕课网学习笔记）
 
-### 单体架构和分布式架构对比
+## 单体架构和分布式架构对比
 
 单体架构的优点：容易测试，容易部署
 
@@ -12,9 +12,11 @@
 - 稳定性不高（牵一发动全身）
 - 扩展性不足 
 
-# 简单的微服务架构
+### 简单的微服务架构
 
 ![架构图](https://github.com/StarPxc/spring-cloud-imooc/blob/master/img/p1.png)
+
+## 服务注册中心：Eureka
 
 ### 注册中心集群配置
 
@@ -80,9 +82,124 @@ nginx,zookeeper,kubernetes是服务端发现，服务端使用代理，使用负
 - 先考虑业务功能，在考虑数据
 - 无状态服务：如果一个数据需要被多个服务共享才能完成一个请求，那么这个数据就可以成为状态，微服务架构中需要将有状态的业务服务改变成的无状态服务，比如session
 
+### SpringCloud中服务调用的两种方式
+
+#### RestTemplate：
+
+##### 第一种方式
+
+```java
+@GetMapping("/getProductMsg")
+public String getProductMsg(){
+    //RestTemplate的第一种方式(直接使用restTemplate，url写死)
+    RestTemplate restTemplate=new RestTemplate();
+    String response=restTemplate.getForObject("http://localhost:8000/msg",String.class);
+    log.info("response={}",response);
+    return response;
+}
+```
+
+缺点：服务地址写死
+
+##### 第二种方式
+
+```java
+//第二种方式 （利用loadBalancerClient通过应用名称获取url）
+RestTemplate restTemplate = new RestTemplate();
+ServiceInstance instance = loadBalancerClient.choose("PRODUCT");
+String url = String.format("http://%s:%s", instance.getHost(), instance.getPort() + "/msg");
+String response = restTemplate.getForObject(url, String.class);
+log.info("response={}", response);
+return response;
+```
+
+#### 第三种方式
+
+先写一个配置类
+
+```
+@Component
+public class RestTemplateConfig {
+    @Bean
+    @LoadBalanced
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
+}
+```
+
+然后直接可以通过编写应用的名称来调用服务
+
+```
+//第三种方式（）
+String response = restTemplate.getForObject("http://PRODUCT/msg", String.class);
+log.info("response={}", response);
+return response;
+```
+
+#### feign方式
+
+1. 在pom.xml中添加依赖
+
+   依赖一定要写对
+
+```xml
+ <!--错误写法 写错了pom也不会报错，直到启动的时候回报NoClassDefFoundError: feign/Feign$Builder-->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-feign</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-boot-starter-feign</artifactId>
+</dependency>
+
+ <!--正确写法-->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-feign</artifactId>
+</dependency>
+```
 
 
 
+2. 在启动类上T添加注解@EnableFeignClients
+
+3. 声明调用的方法
+
+   ```
+   @FeignClient(name = "product")//访问product应用下面的msg接口
+   public interface ProductClient {
+       @GetMapping("/msg")
+       String productMsg();
+   }
+   ```
+
+4. 调用接口
+
+```java
+@Autowired
+private ProductClient productClient;
+  @GetMapping("/getProductMsg")
+    public String getProductMsg() {
+        String response= productClient.productMsg();
+        //通过feign
+        log.info("response={}", response);
+        return response;
+    }
+```
+
+## 客户端负载均衡：Ribbon
+
+
+
+修改负载均衡算法（默认是轮询）
+
+```yml
+PRODUCT:# 服务名
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+```
 
 
 
