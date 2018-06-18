@@ -6,18 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Created by 廖师兄
- * 2018-01-21 21:57
- */
+
 @RestController
-@RequestMapping("/env")
+@RequestMapping("env")
 @RefreshScope
 public class EnvController {
-
-
-    private String env="pxc";
-
+    @Value("${env}")
+    private String env;
     @GetMapping("/print")
     public String print() {
         return env;

@@ -10,8 +10,11 @@ import com.imooc.order.service.OrderService;
 import com.imooc.order.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,11 +30,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/order")
 @Slf4j
+@RefreshScope
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
-
+    @Value("${env}")
+    private String env;
+    @GetMapping("/print")
+    public String print() {
+        return env;
+    }
     /**
      * 1. 参数检验
      * 2. 查询商品信息(调用商品服务)
