@@ -101,14 +101,14 @@ eureka:
 
 ### 导入pom
 
-```
+```xml
 <dependency>
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-starter-bus-amqp</artifactId>
 </dependency>
 ```
 
-然后启动后，rabbitMQ就会多出一个队列
+然后启动后，RabbitMQ就会多出一个队列
 
 ### 修改配置文件
 
@@ -158,7 +158,7 @@ girl:
 
 #### 定义一个配置类
 
-```
+```java
 @Data
 @Component
 @ConfigurationProperties("girl") #定义前缀 与配置文件中的名称对应
