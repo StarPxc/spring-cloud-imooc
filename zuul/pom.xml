@@ -4,16 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.imooc</groupId>
-    <artifactId>product</artifactId>
+    <artifactId>api-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <modules>
-        <module>common</module>
-        <module>server</module>
-        <module>client</module>
-    </modules>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
-    <name>product</name>
+    <name>api-gateway</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>
@@ -28,8 +23,24 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring-cloud.version>Dalston.SR1</spring-cloud.version>
-        <product-common.version>0.0.1-SNAPSHOT</product-common.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zuul</artifactId>
+        </dependency>
+
+
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -40,13 +51,18 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>com.imooc</groupId>
-                <artifactId>product-common</artifactId>
-                <version>${product-common.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
 
 
 </project>

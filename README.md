@@ -14,7 +14,7 @@
 
 ### 简单的微服务架构
 
-![架构图](https://github.com/StarPxc/spring-cloud-imooc/blob/master/img/p1.png)
+![架构图](https://github.com/StarPxc/spring-cloud-imooc/blob/master/img/3.png) 
 
 ## 服务注册中心：Eureka
 
@@ -23,10 +23,11 @@
 通过如下配置相互注册
 
 ```yml
+eureka1：
 client:
   service-url:
     defaultZone: http://localhost:8761/eureka/ #注册到另一个注册中心
-    
+ eureka2 ：  
 client:
     service-url:
       defaultZone: http://localhost:8762/eureka/ #注册到另一个注册中心
@@ -144,7 +145,7 @@ return response;
    依赖一定要写对
 
 ```xml
- <!--错误写法 写错了pom也不会报错，直到启动的时候回报NoClassDefFoundError: feign/Feign$Builder-->
+ <!--错误写法 写错了pom也不会报错，直到启动的时候会报NoClassDefFoundError: feign/Feign$Builder-->
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-feign</artifactId>
@@ -163,7 +164,7 @@ return response;
 
 
 
-2. 在启动类上T添加注解@EnableFeignClients
+2. 在启动类上添加注解@EnableFeignClients
 
 3. 声明调用的方法
 

@@ -18,37 +18,40 @@ import org.springframework.stereotype.Component;
 public class MqReceiver {
     //1.@RabbitListener(queues = "myQueue") 不会自动创建队列
     //2.自定创建队列 2.x才能用 @RabbitListener(queuesToDeclare = @Queue("myQueue"))
-    //3.自动创建Exchange和Queue绑定
-    @RabbitListener(bindings =@QueueBinding(
+    //3.自动创建Exchange和Queue绑定(会自动创建队列)
+    @RabbitListener(bindings = @QueueBinding(
             value = @Queue("myQueue"),
-            exchange =@Exchange("myExchange")
+            exchange = @Exchange("myExchange")
     ))
-    public void process(String message){
-        log.info("Message：{}",message);
+    public void process(String message) {
+        log.info("Message：{}", message);
     }
 
     /**
      * 数码供应商服务接收消息
+     *
      * @param message
      */
-    @RabbitListener(bindings =@QueueBinding(
+    @RabbitListener(bindings = @QueueBinding(
             value = @Queue("computerOrder"),
-            exchange =@Exchange("myOrder"),
+            exchange = @Exchange("myOrder"),
             key = "computer"
     ))
-    public void processComputer(String message){
-        log.info("computer Message：{}",message);
+    public void processComputer(String message) {
+        log.info("computer Message：{}", message);
     }
+
     /**
      * 水果供应商服务接收消息
+     *
      * @param message
      */
-    @RabbitListener(bindings =@QueueBinding(
+    @RabbitListener(bindings = @QueueBinding(
             value = @Queue("fruitOrder"),
-            exchange =@Exchange("myOrder"),
+            exchange = @Exchange("myOrder"),
             key = "fruit"
     ))
-    public void processFruit(String message){
-        log.info("fruit Message：{}",message);
+    public void processFruit(String message) {
+        log.info("fruit Message：{}", message);
     }
 }

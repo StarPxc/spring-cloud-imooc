@@ -1,0 +1,16 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8762/eureka/
+spring:
+  redis:
+    host: localhost
+    port: 6379
+  cloud:
+    config:  #从配置中心获取配置信息
+      discovery:
+        enabled: true
+        service-id: CONFIG #config应用名称
+      profile: dev
+  application:
+    name: product

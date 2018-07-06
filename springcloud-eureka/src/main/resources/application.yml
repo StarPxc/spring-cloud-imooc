@@ -6,6 +6,10 @@ eureka:
       defaultZone: http://localhost:8762/eureka/
   server:
     enable-self-preservation: false
+    eviction-interval-timer-in-ms: 3000 #清理无效节点的时间间隔，默认60000毫秒
+  instance:
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 10
 spring:
   application:
     name: eureka

@@ -18,11 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * 商品
- * Created by 廖师兄
- * 2017-12-09 21:13
- */
+
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -54,13 +50,13 @@ public class ProductController {
 
         //4. 构造数据
         List<ProductVO> productVOList = new ArrayList<>();
-        for (ProductCategory productCategory: categoryList) {
+        for (ProductCategory productCategory : categoryList) {
             ProductVO productVO = new ProductVO();
             productVO.setCategoryName(productCategory.getCategoryName());
             productVO.setCategoryType(productCategory.getCategoryType());
 
             List<ProductInfoVO> productInfoVOList = new ArrayList<>();
-            for (ProductInfo productInfo: productInfoList) {
+            for (ProductInfo productInfo : productInfoList) {
                 if (productInfo.getCategoryType().equals(productCategory.getCategoryType())) {
                     ProductInfoVO productInfoVO = new ProductInfoVO();
                     BeanUtils.copyProperties(productInfo, productInfoVO);
@@ -76,6 +72,7 @@ public class ProductController {
 
     /**
      * 获取商品列表(给订单服务用的)
+     *
      * @param productIdList
      * @return
      */

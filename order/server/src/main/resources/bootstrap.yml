@@ -4,7 +4,12 @@ eureka:
       defaultZone: http://localhost:8762/eureka/
 spring:
   cloud:
-    config:
+    stream:  #消息分组 保证只有一个实例接收到
+      bindings:
+        myMessage: #对应StreamClient.INPUT的值
+          group: order #应用名字
+          content-type: application/json #让Rabbit中存储的对象序列化成json
+    config:  #从配置中心获取配置信息
       discovery:
         enabled: true
         service-id: CONFIG #config应用名称

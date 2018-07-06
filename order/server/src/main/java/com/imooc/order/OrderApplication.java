@@ -10,7 +10,7 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 @EnableFeignClients(basePackages = "com.imooc.product.client")
 public class OrderApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(OrderApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(OrderApplication.class, args);
+    }
 }

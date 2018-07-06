@@ -37,10 +37,12 @@ public class OrderController {
     private OrderService orderService;
     @Value("${env}")
     private String env;
+
     @GetMapping("/print")
     public String print() {
         return env;
     }
+
     /**
      * 1. 参数检验
      * 2. 查询商品信息(调用商品服务)
@@ -50,8 +52,8 @@ public class OrderController {
      */
     @PostMapping("/create")
     public ResultVO<Map<String, String>> create(@Valid OrderForm orderForm,
-                           BindingResult bindingResult) {
-        if (bindingResult.hasErrors()){
+                                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             log.error("【创建订单】参数不正确, orderForm={}", orderForm);
             throw new OrderException(ResultEnum.PARAM_ERROR.getCode(),
                     bindingResult.getFieldError().getDefaultMessage());

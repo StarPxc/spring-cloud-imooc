@@ -19,6 +19,7 @@ public interface ProductService {
 
     /**
      * 查询商品列表
+     *
      * @param productIdList
      * @return
      */
@@ -26,6 +27,7 @@ public interface ProductService {
 
     /**
      * 扣库存
+     *
      * @param decreaseStockInputList
      */
     void decreaseStock(List<DecreaseStockInput> decreaseStockInputList);

@@ -35,9 +35,7 @@
 
 > eureka.instance.lease-renewal-interval-in-seconds: 10 表示eureka client发送心跳给server端的频率。
 
-- 如果在leaseExpirationDurationInSeconds后，server端没有收到client的心跳，
-- 则将摘除该instance。除此之外，如果该instance实现了HealthCheckCallback，并
-- 决定让自己unavailable的话，则该instance也不会接收到流量。
+- 如果在leaseExpirationDurationInSeconds后，server端没有收到client的心跳，则将摘除该instance。除此之外，如果该instance实现了HealthCheckCallback，并决定让自己unavailable的话，则该instance也不会接收到流量。
 
 > eureka.client.registry-fetch-interval-seconds: 30 
 

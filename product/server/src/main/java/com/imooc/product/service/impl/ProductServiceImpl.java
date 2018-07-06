@@ -9,7 +9,6 @@ import com.imooc.product.exception.ProductException;
 import com.imooc.product.repository.ProductInfoRepository;
 import com.imooc.product.service.ProductService;
 import com.imooc.product.utils.JsonUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +25,13 @@ import java.util.stream.Collectors;
  * 2017-12-09 21:59
  */
 @Service
-@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductInfoRepository productInfoRepository;
 
-
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     @Override
     public List<ProductInfo> findUpAll() {
@@ -52,20 +51,27 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void decreaseStock(List<DecreaseStockInput> decreaseStockInputList) {
+        //事物控制
         List<ProductInfo> productInfoList = decreaseStockProcess(decreaseStockInputList);
-        //进行一步异步处理
-        log.info("productInfoList={}",productInfoList);
 
+        //发送mq消息 减库存出错后事务会回滚但是任然会发送mq消息，所以要把这个两个步骤分成两个方法
+        List<ProductInfoOutput> productInfoOutputList = productInfoList.stream().map(e -> {
+            ProductInfoOutput output = new ProductInfoOutput();
+            BeanUtils.copyProperties(e, output);
+            return output;
+        }).collect(Collectors.toList());
+
+        amqpTemplate.convertAndSend("productInfo", JsonUtil.toJson(productInfoOutputList));
 
     }
 
     @Transactional
     public List<ProductInfo> decreaseStockProcess(List<DecreaseStockInput> decreaseStockInputList) {
         List<ProductInfo> productInfoList = new ArrayList<>();
-        for (DecreaseStockInput decreaseStockInput: decreaseStockInputList) {
-            ProductInfo productInfo= productInfoRepository.findOne(decreaseStockInput.getProductId());
+        for (DecreaseStockInput decreaseStockInput : decreaseStockInputList) {
+            ProductInfo productInfo = productInfoRepository.findOne(decreaseStockInput.getProductId());
             //判断商品是否存在
-            if (productInfo==null){
+            if (productInfo == null) {
                 throw new ProductException(ResultEnum.PRODUCT_NOT_EXIST);
             }
 

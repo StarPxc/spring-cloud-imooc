@@ -19,8 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class GirlController {
     @Autowired
     private GirlConfig girlConfig;
+
     @GetMapping("/print")
-    public String print(){
-        return "name："+girlConfig.getName()+"；age："+girlConfig.getAge();
+    public String print() {
+        return "name：" + girlConfig.getName() + "；age：" + girlConfig.getAge();
     }
 }
